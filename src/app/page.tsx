@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
-import { pathways } from '@/lib/data/sample-courses';
 
 export default function Home() {
   return (
@@ -268,82 +267,6 @@ export default function Home() {
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               A structured progression from nervous beginner to confident conference speaker
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {pathways.slice(0, 3).map((pathway) => (
-              <Link
-                key={pathway.id}
-                href={`/pathway/${pathway.id}`}
-                className="group bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div 
-                    className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-sm"
-                    style={{ backgroundColor: pathway.color }}
-                  >
-                    {pathway.level}
-                  </div>
-                  <div className="flex-1">
-                    <span 
-                      className="px-3 py-1 text-xs font-bold rounded-full"
-                      style={{ backgroundColor: `${pathway.color}15`, color: pathway.color }}
-                    >
-                      {pathway.challenges.length} Challenges
-                    </span>
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{pathway.title}</h3>
-                <p className="text-sm font-semibold text-gray-600 mb-3">{pathway.subtitle}</p>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">{pathway.description}</p>
-                
-                <div className="flex items-center text-sm font-semibold group-hover:translate-x-1 transition-transform" style={{ color: pathway.color }}>
-                  Start Level {pathway.level}
-                  <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {pathways.slice(3, 5).map((pathway) => (
-              <Link
-                key={pathway.id}
-                href={`/pathway/${pathway.id}`}
-                className="group bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div 
-                    className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-2xl font-bold shadow-sm"
-                    style={{ backgroundColor: pathway.color }}
-                  >
-                    {pathway.level}
-                  </div>
-                  <div className="flex-1">
-                    <span 
-                      className="px-3 py-1 text-xs font-bold rounded-full"
-                      style={{ backgroundColor: `${pathway.color}15`, color: pathway.color }}
-                    >
-                      {pathway.challenges.length} Challenges
-                    </span>
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{pathway.title}</h3>
-                <p className="text-sm font-semibold text-gray-600 mb-3">{pathway.subtitle}</p>
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">{pathway.description}</p>
-                
-                <div className="flex items-center text-sm font-semibold group-hover:translate-x-1 transition-transform" style={{ color: pathway.color }}>
-                  Start Level {pathway.level}
-                  <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </div>
-              </Link>
-            ))}
           </div>
 
           <div className="text-center">

@@ -1,14 +1,16 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
-import { pathways } from '@/lib/data/sample-courses';
+import SessionAgenda from '@/components/curriculum/SessionAgenda';
+import { pathways } from '@/lib/data/pathways';
 
 interface PathwayPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function PathwayDetailPage({ params }: PathwayPageProps) {
-  const pathway = pathways.find(p => p.id === params.id);
+export default async function PathwayDetailPage({ params }: PathwayPageProps) {
+  const { id } = await params;
+  const pathway = pathways.find(p => p.id === id);
 
   if (!pathway) {
     notFound();
@@ -91,8 +93,8 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
               <div className="lg:col-span-1">
                 <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
                   <div className="text-center mb-6">
-                    <div className="text-6xl font-bold mb-3">{pathway.challenges.length}</div>
-                    <div className="text-white/90 font-medium text-lg">Speaking Challenges</div>
+                    <div className="text-6xl font-bold mb-3">{pathway.goals.length}</div>
+                    <div className="text-white/90 font-medium text-lg">Speaking Goals</div>
                   </div>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between items-center">
@@ -117,50 +119,76 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
+              {/* Weekly Topics */}
               <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-strong">Speaking Challenges</h2>
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Weekly Topics</h2>
+                <div className="grid grid-cols-1 gap-4">
+                  {pathway.weeklyTopics.map((topic, index) => (
+                    <div key={index} className="flex items-center p-4 bg-gray-50 dark:bg-surface-2 rounded-lg">
+                      <div 
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0"
+                        style={{ backgroundColor: pathway.color }}
+                      >
+                        {index + 1}
+                      </div>
+                      <span className="text-gray-700 dark:text-muted font-medium">{topic}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Speaking Goals */}
+              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Speaking Goals</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {pathway.goals.map((goal, index) => (
+                    <div key={index} className="flex items-start p-4 bg-gray-50 dark:bg-surface-2 rounded-lg">
+                      <svg className="w-6 h-6 mr-3 shrink-0 mt-0.5" style={{ color: pathway.color }} fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-gray-700 dark:text-muted font-medium">{goal}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Improvisation Toolkit */}
+              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Impromptu Toolkit Prompts</h2>
+                <p className="text-gray-600 dark:text-muted mb-6">Use these prompts for breakout practice sessions:</p>
+                <div className="space-y-4">
+                  {pathway.improvToolkitPrompts.map((prompt, index) => (
+                    <div key={index} className="border-l-4 pl-6 py-3" style={{ borderColor: pathway.color }}>
+                      <p className="text-gray-700 dark:text-muted leading-relaxed">{prompt}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Experimental Challenges */}
+              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Experimental Challenges</h2>
+                <p className="text-gray-600 dark:text-muted mb-6">Interactive group exercises to push your skills:</p>
                 <div className="space-y-6">
-                  {pathway.challenges.map((challenge, index) => (
+                  {pathway.experimentalChallenges.map((challenge, index) => (
                     <div 
-                      key={challenge.id}
-                      className="border-l-4 pl-6 py-4 hover:bg-gray-50 dark:hover:bg-surface-2 transition-colors rounded-r-lg"
+                      key={index}
+                      className="border-l-4 pl-6 py-4 bg-gray-50 dark:bg-surface-2 rounded-r-lg"
                       style={{ borderColor: pathway.color }}
                     >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center">
-                          <div 
-                            className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0"
-                            style={{ backgroundColor: pathway.color }}
-                          >
-                            {challenge.order}
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-strong">{challenge.title}</h3>
-                            <div className="flex items-center gap-4 mt-1">
-                              <span className="text-sm font-semibold" style={{ color: pathway.color }}>
-                                {challenge.duration}
-                              </span>
-                              <span className="text-sm text-gray-500 dark:text-muted">
-                                Focus: {challenge.focus}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-gray-700 dark:text-muted leading-relaxed ml-14">
-                        {challenge.description}
-                      </p>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-strong mb-2">{challenge.title}</h3>
+                      <p className="text-gray-700 dark:text-muted leading-relaxed">{challenge.description}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="bg-white dark:bg-card rounded-2xl p-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Skills You'll Develop</h2>
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">Skills You&apos;ll Develop</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {pathway.skillsDeveloped.map((skill, index) => (
                     <div key={index} className="flex items-center">
-                      <svg className="w-6 h-6 mr-3 flex-shrink-0" style={{ color: pathway.color }} fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-6 h-6 mr-3 shrink-0" style={{ color: pathway.color }} fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       <span className="text-gray-700 dark:text-muted font-medium">{skill}</span>
@@ -168,6 +196,9 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                   ))}
                 </div>
               </div>
+
+              {/* Session Agenda */}
+              <SessionAgenda accentColor={pathway.color} />
             </div>
 
             <div className="lg:col-span-1">
@@ -175,7 +206,7 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                 <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-strong">How It Works</h2>
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#3685ff] rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#3685ff] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
                       1
                     </div>
                     <div>
@@ -184,16 +215,16 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#FF5F87] rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#FF5F87] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
                       2
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">Choose a Challenge</h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">Pick any challenge from your current level to practice</p>
+                  <h3 className="font-bold text-gray-900 dark:text-strong mb-1">Choose Your Challenge</h3>
+                  <p className="text-sm text-gray-600 dark:text-muted">Pick a prompt or experimental challenge to practice</p>
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#19C37D] rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#19C37D] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
                       3
                     </div>
                     <div>
@@ -202,7 +233,7 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#FFB020] rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#FFB020] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
                       4
                     </div>
                     <div>
@@ -211,7 +242,7 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                     </div>
                   </div>
                   <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#F04438] rounded-full flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#F04438] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
                       5
                     </div>
                     <div>
@@ -261,7 +292,7 @@ export default function PathwayDetailPage({ params }: PathwayPageProps) {
                     {p.level}
                   </div>
                   <h3 className="font-bold text-gray-900 dark:text-strong mb-1 text-sm">{p.title}</h3>
-                  <p className="text-xs text-gray-600 dark:text-muted">{p.challenges.length} challenges</p>
+                  <p className="text-xs text-gray-600 dark:text-muted">{p.goals.length} goals</p>
                 </Link>
               ))}
             </div>

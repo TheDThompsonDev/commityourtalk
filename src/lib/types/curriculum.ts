@@ -5,9 +5,18 @@ export interface Pathway {
   subtitle: string;
   description: string;
   focus: string;
-  challenges: Challenge[];
+  weeklyTopics: string[];
+  improvToolkitPrompts: string[];
+  experimentalChallenges: ExperimentalChallenge[];
+  goals: string[];
   skillsDeveloped: string[];
   color: string;
+  challenges?: Challenge[]; // Optional for backwards compatibility
+}
+
+export interface ExperimentalChallenge {
+  title: string;
+  description: string;
 }
 
 export interface Challenge {

@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import MainLayout from '@/components/layout/MainLayout';
 import PathwayCard from '@/components/curriculum/PathwayCard';
-import { pathways } from '@/lib/data/sample-courses';
+import SessionAgenda from '@/components/curriculum/SessionAgenda';
+import { pathways } from '@/lib/data/pathways';
 
 export default function PathwayPage() {
   return (
@@ -74,8 +75,8 @@ export default function PathwayPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">3x</div>
-                <div className="text-sm font-semibold text-gray-700 mb-1">Weekly Sessions</div>
+                <div className="text-4xl font-bold text-gray-900 mb-2">1</div>
+                <div className="text-sm font-semibold text-gray-700 mb-1">Weekly Group Session</div>
                 <p className="text-xs text-gray-600">Practice consistently</p>
               </div>
 
@@ -105,21 +106,6 @@ export default function PathwayPage() {
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Start where you are. Progress at your pace. Each level builds on the last, taking you from 2-minute talks to full conference keynotes.
               </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-5xl mx-auto">
-              {pathways.map((pathway) => (
-                <div key={pathway.id} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow text-center">
-                  <div 
-                    className="w-16 h-16 rounded-xl flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-sm"
-                    style={{ backgroundColor: pathway.color }}
-                  >
-                    {pathway.level}
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2 text-sm leading-tight">{pathway.title}</h3>
-                  <p className="text-xs text-gray-600">{pathway.subtitle}</p>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -202,6 +188,25 @@ export default function PathwayPage() {
           </div>
         </section>
 
+        <section className="bg-white py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-block px-4 py-1.5 bg-[#E8F1FF] border border-blue-100 rounded-full mb-4 text-sm font-semibold text-[#3685ff]">
+                What to Expect
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Weekly Discord Session Structure
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Every practice session follows a carefully designed 60-minute format to maximize your growth
+              </p>
+            </div>
+            <div className="max-w-4xl mx-auto">
+              <SessionAgenda />
+            </div>
+          </div>
+        </section>
+
         <section className="bg-[#F9FAFB] py-24" id="levels">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -212,7 +217,8 @@ export default function PathwayPage() {
                 Explore each level to see what challenges and skills you&apos;ll develop
               </p>
             </div>
-            <div className="space-y-6">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {pathways.map((pathway) => (
                 <PathwayCard key={pathway.id} pathway={pathway} />
               ))}
