@@ -1,8 +1,10 @@
 interface SessionAgendaProps {
   accentColor?: string;
+  variant?: 'light' | 'dark';
+  showHeader?: boolean;
 }
 
-export default function SessionAgenda({ accentColor = '#3685ff' }: SessionAgendaProps) {
+export default function SessionAgenda({ accentColor = '#3685ff', variant = 'light', showHeader = true }: SessionAgendaProps) {
   const agendaItems = [
     {
       time: '5 min',
@@ -58,42 +60,46 @@ export default function SessionAgenda({ accentColor = '#3685ff' }: SessionAgenda
   const totalTime = 60; // minutes
 
   return (
-    <div className="bg-white dark:bg-card rounded-2xl p-8 border border-gray-100 dark:border-custom shadow-lg">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-strong mb-2">
-            Weekly Session Structure
-          </h2>
-          <p className="text-gray-600 dark:text-muted">
-            Every Discord session follows this proven format
-          </p>
-        </div>
-        <div className="text-right">
-          <div className="text-4xl font-bold" style={{ color: accentColor }}>
-            {totalTime}
+    <div className={`${variant === 'dark' ? 'bg-slate-800 border-white/10' : 'bg-white border-gray-100'} rounded-2xl p-8 border shadow-lg`}>
+      {showHeader && (
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className={`text-3xl font-bold mb-2 ${variant === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              Weekly Session Structure
+            </h2>
+            <p className={`${variant === 'dark' ? 'text-slate-300' : 'text-gray-600'}`}>
+              Every Discord session follows this proven format
+            </p>
           </div>
-          <div className="text-sm text-gray-600 dark:text-muted font-semibold">
-            minutes
+          <div className="text-right">
+            <div className="text-4xl font-bold" style={{ color: accentColor }}>
+              {totalTime}
+            </div>
+            <div className={`text-sm font-semibold ${variant === 'dark' ? 'text-slate-300' : 'text-gray-600'}`}>
+              minutes
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="space-y-4">
         {agendaItems.map((item, index) => (
           <div
             key={index}
             className={`relative pl-12 pr-4 py-4 rounded-xl transition-all hover:shadow-md ${
-              item.type === 'breakout'
-                ? 'bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/20'
+              variant === 'dark'
+                ? 'bg-white/5'
+                : item.type === 'breakout'
+                ? 'bg-gradient-to-r from-blue-50 to-transparent'
                 : item.type === 'spotlight'
-                ? 'bg-gradient-to-r from-yellow-50 to-transparent dark:from-yellow-900/20'
-                : 'bg-gray-50 dark:bg-surface-2'
+                ? 'bg-gradient-to-r from-yellow-50 to-transparent'
+                : 'bg-gray-50'
             }`}
           >
             {/* Timeline dot and line */}
             <div className="absolute left-4 top-6">
               <div
-                className="w-4 h-4 rounded-full border-4 border-white dark:border-card"
+                className={`w-4 h-4 rounded-full border-4 ${variant === 'dark' ? 'border-slate-800' : 'border-white'}`}
                 style={{ backgroundColor: accentColor }}
               />
               {index < agendaItems.length - 1 && (
@@ -109,26 +115,26 @@ export default function SessionAgenda({ accentColor = '#3685ff' }: SessionAgenda
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">{item.icon}</span>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-strong">
+                  <h3 className={`text-lg font-bold ${variant === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                     {item.title}
                   </h3>
                   {item.type === 'breakout' && (
-                    <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold rounded-full">
+                    <span className={`${variant === 'dark' ? 'bg-blue-500/20 text-blue-200' : 'bg-blue-100 text-blue-700'} px-2 py-1 text-xs font-bold rounded-full`}>
                       Small Groups
                     </span>
                   )}
                   {item.type === 'spotlight' && (
-                    <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs font-bold rounded-full">
+                    <span className={`${variant === 'dark' ? 'bg-yellow-500/20 text-yellow-200' : 'bg-yellow-100 text-yellow-700'} px-2 py-1 text-xs font-bold rounded-full`}>
                       Challenge
                     </span>
                   )}
                 </div>
-                <p className="text-gray-700 dark:text-muted text-sm leading-relaxed">
+                <p className={`${variant === 'dark' ? 'text-slate-300' : 'text-gray-700'} text-sm leading-relaxed`}>
                   {item.description}
                 </p>
               </div>
               <div
-                className="shrink-0 text-right px-3 py-1 rounded-lg font-bold text-sm"
+                className={`shrink-0 text-right px-3 py-1 rounded-lg font-bold text-sm ${variant === 'dark' ? '' : ''}`}
                 style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
               >
                 {item.time}
@@ -138,14 +144,14 @@ export default function SessionAgenda({ accentColor = '#3685ff' }: SessionAgenda
         ))}
       </div>
 
-      <div className="mt-8 p-6 bg-gradient-to-r from-gray-50 to-white dark:from-surface-2 dark:to-card rounded-xl border border-gray-200 dark:border-custom">
+      <div className={`mt-8 p-6 rounded-xl border ${variant === 'dark' ? 'bg-white/5 border-white/10' : 'bg-gradient-to-r from-gray-50 to-white border-gray-200'}`}>
         <div className="flex items-start gap-4">
           <div className="text-3xl">💡</div>
           <div className="flex-1">
-            <h4 className="font-bold text-gray-900 dark:text-strong mb-2">
+            <h4 className={`font-bold mb-2 ${variant === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Why This Structure Works
             </h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-muted">
+            <ul className={`space-y-2 text-sm ${variant === 'dark' ? 'text-slate-300' : 'text-gray-700'}`}>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 mt-0.5">✓</span>
                 <span><strong>Multiple practice opportunities:</strong> Everyone speaks at least twice in small, supportive groups</span>

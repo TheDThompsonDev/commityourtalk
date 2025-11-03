@@ -45,6 +45,9 @@ A modern, clean design system focused on clarity, accessibility, and encouraging
 
 --surface-dark: #1E1B2E;       /* Dark card backgrounds (feedback cards) */
 --surface-dark-alt: #16142B;   /* Alternative dark surface */
+/* Slate-based dark section backgrounds (hero/CTA/sections) */
+--surface-slate-900: #0F172A;  /* Dark slate background */
+--surface-slate-800: #1E293B;  /* Slightly lighter slate */
 ```
 
 ### State Colors
@@ -180,6 +183,22 @@ font-weight: var(--font-semibold);
 hover: background: var(--primary-blue-light);
 ```
 
+#### Buttons on Dark Surfaces
+```css
+/* Primary on dark */
+background: var(--surface-white);
+color: var(--text-primary);
+border: 1px solid rgba(255,255,255,0.2);
+box-shadow: var(--shadow-sm);
+
+/* Secondary on dark (ghost) */
+background: transparent;
+color: #FFFFFF;
+border: 1px solid rgba(255,255,255,0.3);
+
+/* Hover states should increase contrast slightly */
+```
+
 #### Button Sizes
 - **Small:** padding: 8px 16px; font-size: 14px;
 - **Medium:** padding: 12px 24px; font-size: 16px; (default)
@@ -214,6 +233,55 @@ box-shadow: var(--shadow-lg);
 ```css
 border-left: 4px solid var(--primary-blue);
 /* or any semantic color */
+```
+
+### Page Sections (Premium)
+
+#### Dark Slate Section
+```css
+Background: linear gradient from --surface-slate-900 to --surface-slate-800;
+Text: white on headings; slate-300 on body; accents use var(--primary-blue);
+Cards inside: use translucent surfaces (e.g., white/5) with subtle borders (white/10).
+```
+
+#### Outcomes Row
+```css
+Grid of 2–4 light cards:
+  Card: Light background, border: var(--border-light), radius: var(--radius-lg)
+  Title: font-bold, text-primary; Subtext: text-secondary
+  Optional small label (Outcome 1, etc.) in var(--primary-blue)
+```
+
+#### Roadmap Snapshot Card
+```css
+Header: title (left) + small meta (right)
+List Items: number pill (primary-blue), title, small note
+Progress Bar: 8px height, primary-blue progress
+```
+
+#### Roadmap Stepper
+```css
+Horizontal on desktop, vertical on mobile
+Step: circular number (primary-blue), title, small note
+Connector: subtle track (border-light) between steps
+```
+
+#### Persona Cards (Who this is for)
+```css
+Three light cards with title + short description
+Label: small, primary-blue; Emphasis on clarity and scannability
+```
+
+#### Testimonials (Dark)
+```css
+Section: Dark slate background
+Card: white/5 background, border white/10, italic quote, name in slate-300
+```
+
+#### FAQ (Divided)
+```css
+Container: light background, rounded-xl, border: var(--border-light)
+Items: details/summary with divider lines; summary bold; caret rotates on open
 ```
 
 ---
@@ -274,6 +342,27 @@ Suggestion: bg: rgba(255, 176, 32, 0.2); color: var(--warning-orange);
 Body Language: bg: rgba(240, 68, 56, 0.2); color: var(--destructive-red);
 ```
 
+### Session Agenda (Variants)
+Props:
+```ts
+accentColor?: string;        // hex color for accents
+variant?: 'light' | 'dark';  // background/text styling
+showHeader?: boolean;        // toggles internal header
+```
+
+Light Variant:
+```css
+Item backgrounds use subtle tints by type (blue/yellow/gray)
+Timeline dot: accentColor with white border
+```
+
+Dark Variant:
+```css
+Card: white/5 background, border: white/10
+Text: white (titles), slate-300 (body)
+Pills: low-opacity brand tints (blue/yellow)
+```
+
 ---
 
 ### Form Inputs
@@ -329,6 +418,29 @@ hover:
 active:
   color: var(--primary-blue);
   font-weight: var(--font-semibold);
+```
+
+#### Sticky In-Page Subnav (Scrollspy)
+```css
+Container:
+  position: sticky; top: 64px; /* below top nav */
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border-light);
+
+Links:
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-2);
+  border-bottom: 2px solid transparent;
+
+Active:
+  color: var(--text-primary);
+  border-bottom-color: var(--primary-blue);
+
+Behavior:
+  html: scroll-behavior: smooth;
+  Sections: add scroll-margin-top ~96px (e.g., Tailwind `scroll-mt-24`).
 ```
 
 ---
@@ -603,7 +715,7 @@ hover:
 - Use progress indicators to show user advancement
 
 ### Don'ts ❌
-- Don't use gradients (per project rules)
+- Avoid harsh, high-contrast gradients; allow subtle linear gradients only for large section backgrounds (hero/CTA/section bands)
 - Don't use custom spacing outside the scale
 - Don't use pure black (#000000) for text
 - Don't create buttons smaller than 44px height
