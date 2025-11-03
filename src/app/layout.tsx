@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Commit Your Talk - Speak Tech. Build Confidence.",
-  description: "Transform from a nervous developer into a confident speaker through live practice sessions. Start with 2-minute talks, grow to conference keynotes.",
+  description:
+    "Transform from a nervous developer into a confident speaker through live practice sessions. Start with 2-minute talks, grow to conference keynotes.",
   icons: {
     icon: "/cytLogo.png",
   },

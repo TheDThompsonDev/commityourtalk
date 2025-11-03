@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function SignInPage() {
   return (
@@ -9,13 +9,20 @@ export default function SignInPage() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-[#3685ff] rounded-2xl mb-4">
               <span className="text-3xl">🎙️</span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
-            <p className="text-gray-600">Sign in to continue your speaking journey</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back
+            </h1>
+            <p className="text-gray-600">
+              Sign in to continue your speaking journey
+            </p>
           </div>
 
           <form className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Email address
               </label>
               <input
@@ -30,7 +37,10 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 Password
               </label>
               <input
@@ -52,7 +62,10 @@ export default function SignInPage() {
                 />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
-              <Link href="#" className="text-sm font-semibold text-[#3685ff] hover:text-[#2870E5]">
+              <Link
+                href="#"
+                className="text-sm font-semibold text-[#3685ff] hover:text-[#2870E5]"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -67,8 +80,11 @@ export default function SignInPage() {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don&apos;t have an account?{' '}
-              <Link href="#" className="font-semibold text-[#3685ff] hover:text-[#2870E5]">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="#"
+                className="font-semibold text-[#3685ff] hover:text-[#2870E5]"
+              >
                 Join Discord
               </Link>
             </p>
@@ -76,7 +92,10 @@ export default function SignInPage() {
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900 font-medium">
+          <Link
+            href="/"
+            className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+          >
             ← Back to home
           </Link>
         </div>
@@ -84,4 +103,3 @@ export default function SignInPage() {
     </div>
   );
 }
-
