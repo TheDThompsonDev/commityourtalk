@@ -32,7 +32,7 @@ export default function CurriculumPage() {
         <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-16">
-              {pathways.map((pathway, index) => (
+            {pathways.map((pathway) => (
                 <div
                   key={pathway.id}
                   className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
@@ -111,7 +111,7 @@ export default function CurriculumPage() {
 
                       <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-4">
-                          Skills You'll Develop
+                          Skills You&apos;ll Develop
                         </h3>
                         <div className="flex flex-wrap gap-2">
                           {pathway.skillsDeveloped.map((skill, i) => (
