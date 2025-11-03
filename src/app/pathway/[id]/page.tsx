@@ -72,7 +72,7 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
 
                 <div className="flex gap-4">
                   <a
-                    href="https://discord.gg/your-invite"
+                    href="https://discord.gg/pWGt6JMV9t"
                     className="bg-white text-gray-900 font-bold py-4 px-8 rounded-xl hover:bg-gray-100 transition-colors inline-flex items-center shadow-xl text-lg"
                   >
                     Start This Level
@@ -376,7 +376,7 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
                 </div>
 
                 <a
-                  href="https://discord.gg/your-invite"
+                  href="https://discord.gg/pWGt6JMV9t"
                   className="w-full mt-8 font-bold py-4 px-6 rounded-xl transition-colors inline-flex items-center justify-center"
                   style={{ backgroundColor: pathway.color, color: "white" }}
                 >

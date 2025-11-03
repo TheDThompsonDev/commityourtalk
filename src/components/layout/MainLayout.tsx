@@ -34,14 +34,14 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 >
                   Pathways
                 </Link>
-                <a
-                  href="#how-it-works"
+                <Link
+                  href="/curriculum"
                   className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                 >
-                  How It Works
-                </a>
+                  Curriculum
+                </Link>
                 <a
-                  href="https://discord.gg/your-invite"
+                  href="https://discord.gg/pWGt6JMV9t"
                   className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors inline-flex items-center gap-1"
                 >
                   <svg
@@ -114,15 +114,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
               >
                 Pathways
               </Link>
-              <a
-                href="#how-it-works"
+              <Link
+                href="/curriculum"
                 className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
-                How It Works
-              </a>
+                Curriculum
+              </Link>
               <a
-                href="https://discord.gg/your-invite"
+                href="https://discord.gg/pWGt6JMV9t"
                 className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -171,7 +171,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 community.
               </p>
               <a
-                href="https://discord.gg/your-invite"
+                href="https://discord.gg/pWGt6JMV9t"
                 className="inline-flex items-center bg-[#3685ff] hover:bg-[#2870E5] text-white px-6 py-3 rounded-lg font-semibold transition-all"
               >
                 <svg
@@ -220,7 +220,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
               <ul className="space-y-3 text-gray-400">
                 <li>
                   <a
-                    href="https://discord.gg/your-invite"
+                    href="https://discord.gg/pWGt6JMV9t"
                     className="hover:text-white transition-colors"
                   >
                     Discord

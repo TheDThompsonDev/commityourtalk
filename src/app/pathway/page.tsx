@@ -704,7 +704,7 @@ export default function PathwayPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <a
-                href="https://discord.gg/your-invite"
+                href="https://discord.gg/pWGt6JMV9t"
                 className="bg-white hover:bg-blue-50 text-slate-900 font-semibold px-8 py-4 rounded-lg transition-colors inline-flex items-center justify-center shadow-sm"
               >
                 <svg
