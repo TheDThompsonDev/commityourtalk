@@ -3,11 +3,20 @@
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
-interface MainLayoutProps {
-  children: React.ReactNode;
+
+interface User {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
 }
 
-export default function MainLayout({ children }: MainLayoutProps) {
+interface MainLayoutProps {
+  children: React.ReactNode;
+  user?: User | null;
+}
+
+export default function MainLayout({ children, user }: MainLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -57,18 +66,53 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </div>
 
             <div className="hidden md:flex items-center gap-4">
-              <Link
-                href="/signin"
-                className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/signin"
-                className="bg-[#3685ff] hover:bg-[#2870E5] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm hover:shadow-md"
-              >
-                Get Started Free
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/attendance"
+                    className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors"
+                  >
+                    Attendance
+                  </Link>
+                  <Link
+                    href="/signout"
+                    className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors"
+                  >
+                    Sign Out
+                  </Link>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-[#3685ff] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                      {user.firstName
+                        ? user.firstName.charAt(0).toUpperCase()
+                        : user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-gray-700">
+                      {user.firstName || user.email}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="bg-[#3685ff] hover:bg-[#2870E5] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm hover:shadow-md"
+                  >
+                    Get Started Free
+                  </Link>
+                </>
+              )}
             </div>
 
             <div className="md:hidden flex items-center">
@@ -129,20 +173,63 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 Discord Community
               </a>
               <div className="border-t border-gray-200 pt-4 mt-4">
-                <Link
-                  href="/signin"
-                  className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signin"
-                  className="block px-3 py-2 bg-[#3685ff] text-white rounded-lg text-base font-semibold mt-2 text-center"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Get Started Free
-                </Link>
+                {user ? (
+                  <>
+                    <div className="px-3 py-2 mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-[#3685ff] rounded-full flex items-center justify-center text-white font-bold">
+                          {user.firstName
+                            ? user.firstName.charAt(0).toUpperCase()
+                            : user.email.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900">
+                            {user.firstName || user.email}
+                          </p>
+                          <p className="text-xs text-gray-600">{user.email}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/attendance"
+                      className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Attendance
+                    </Link>
+                    <Link
+                      href="/signout"
+                      className="block px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg text-base font-semibold mt-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign Out
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/login"
+                      className="block px-3 py-2 bg-[#3685ff] text-white rounded-lg text-base font-semibold mt-2 text-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Get Started Free
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
