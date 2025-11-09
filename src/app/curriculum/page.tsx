@@ -1,8 +1,11 @@
-"use client";
-
 import { curriculum } from "@/lib/data/curriculum";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
+
+export const metadata = {
+  title: "Complete Curriculum - Commit Your Talk",
+  description: "A comprehensive learning journey from first talk to conference keynote through 10 progressive levels.",
+};
 
 export default function CurriculumPage() {
   return (
