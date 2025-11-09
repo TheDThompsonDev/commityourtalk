@@ -1,29 +1,24 @@
-"use client";
-
 import MainLayout from "@/components/layout/MainLayout";
 import Link from "next/link";
+import PageHeader from "@/components/ui/PageHeader";
+import Container from "@/components/ui/Container";
+
+export const metadata = {
+  title: "CYT Approach Framework - Commit Your Talk",
+  description: "Learn the CYT Approach Framework that transforms engineers from order-takers into confident technical leaders through diagnostic questioning.",
+};
 
 export default function CYTFrameworkPage() {
   return (
     <MainLayout>
       <div className="bg-gray-50 min-h-screen">
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                The CYT Approach Framework
-              </h1>
-              <p className="text-2xl text-blue-100 mb-4">
-                The Diagnostician&apos;s Model for Engineering Leadership
-              </p>
-              <p className="text-xl text-blue-200 max-w-3xl mx-auto">
-                Stop &quot;telling,&quot; start &quot;discovering.&quot; Learn the framework that transforms engineers from order-takers into confident technical leaders.
-              </p>
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          title="The CYT Approach Framework"
+          subtitle="The Diagnostician's Model for Engineering Leadership"
+          description='Stop "telling," start "discovering." Learn the framework that transforms engineers from order-takers into confident technical leaders.'
+        />
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <Container maxWidth="5xl" className="py-16">
           <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg border-l-4 border-blue-600">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               What is the CYT Approach?
@@ -47,7 +42,7 @@ export default function CYTFrameworkPage() {
 
           <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              The Goal: Stop &quot;Telling,&quot; Start &quot;Discovering&quot;
+              The Goal: Stop {'"'}Telling,{'"'} Start {'"'}Discovering{'"'}
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -386,7 +381,7 @@ export default function CYTFrameworkPage() {
               Explore the Curriculum →
             </Link>
           </div>
-        </div>
+        </Container>
       </div>
     </MainLayout>
   );

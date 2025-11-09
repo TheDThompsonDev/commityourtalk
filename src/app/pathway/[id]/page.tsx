@@ -1,66 +1,41 @@
-"use client";
-
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { use } from "react";
+import type { Metadata } from "next";
 import MainLayout from "@/components/layout/MainLayout";
 import { curriculum } from "@/lib/data/curriculum";
 import { LevelChallenge } from "./levelChallenges";
+import LevelHeader from "@/components/curriculum/LevelHeader";
+import ScriptCard from "@/components/curriculum/ScriptCard";
+import LevelNavigation from "./LevelNavigation";
+import Container from "@/components/ui/Container";
 
 interface LevelDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-const formatText = (text: string) => {
-  const formatted = text.replace(/^\d+\.\s*/, '');
-  
-  const processFormatting = (str: string): React.ReactNode[] => {
-    const result: React.ReactNode[] = [];
-    let currentIndex = 0;
-    
-    const regex = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)|(`([^`]+)`)/g;
-    let match;
-    
-    while ((match = regex.exec(str)) !== null) {
-      if (match.index > currentIndex) {
-        result.push(str.substring(currentIndex, match.index));
-      }
-      
-      if (match[1]) {
-        result.push(
-          <strong key={match.index} className="font-semibold text-gray-900">
-            {match[2]}
-          </strong>
-        );
-      } else if (match[3]) {
-        result.push(
-          <em key={match.index} className="italic">
-            {match[4]}
-          </em>
-        );
-      } else if (match[5]) {
-        result.push(
-          <code key={match.index} className="px-1.5 py-0.5 bg-gray-100 text-gray-800 rounded text-xs font-mono">
-            {match[6]}
-          </code>
-        );
-      }
-      
-      currentIndex = match.index + match[0].length;
-    }
-    
-    if (currentIndex < str.length) {
-      result.push(str.substring(currentIndex));
-    }
-    
-    return result;
-  };
-  
-  return <>{processFormatting(formatted)}</>;
-};
+export async function generateStaticParams() {
+  return curriculum.map((level) => ({
+    id: level.id,
+  }));
+}
 
-export default function LevelDetailPage({ params }: LevelDetailPageProps) {
-  const { id } = use(params);
+export async function generateMetadata({ params }: LevelDetailPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const level = curriculum.find((l) => l.id === id);
+
+  if (!level) {
+    return {
+      title: "Level Not Found - Commit Your Talk",
+    };
+  }
+
+  return {
+    title: `${level.title} - Level ${level.level} - Commit Your Talk`,
+    description: level.description,
+  };
+}
+
+export default async function LevelDetailPage({ params }: LevelDetailPageProps) {
+  const { id } = await params;
   const level = curriculum.find((l) => l.id === id);
 
   if (!level) {
@@ -70,66 +45,13 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
   return (
     <MainLayout>
       <div className="bg-gray-50 min-h-screen">
-        <div
-          className="text-white py-24 relative overflow-hidden"
-          style={{ backgroundColor: level.color }}
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <div className="lg:col-span-2">
-                <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mr-4 text-3xl font-bold shadow-lg">
-                    {level.level}
-                  </div>
-                  <div>
-                    <span className="text-white/90 text-sm font-semibold uppercase tracking-wider">
-                      Level {level.level}
-                    </span>
-                    <h1 className="text-4xl md:text-5xl font-bold">
-                      {level.title}
-                    </h1>
-                  </div>
-                </div>
+        <LevelHeader level={level} />
 
-                <p className="text-3xl font-bold text-white/95 mb-6">
-                  {level.subtitle}
-                </p>
-
-                <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  {level.description}
-                </p>
-
-                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-6 mb-8">
-                  <h3 className="text-lg font-bold mb-3 flex items-center">
-                    <svg
-                      className="w-6 h-6 mr-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    Core Technique: {level.coreTechnique.name}
-                  </h3>
-                  <p className="text-white/90 leading-relaxed">
-                    {level.coreTechnique.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <Container className="py-16">
           {level.level === 1 && (
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 mb-12 border-2 border-blue-200 shadow-xl">
               <div className="flex items-start mb-6">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4 shrink-0">
                   <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -162,7 +84,7 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-start">
-                      <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                      <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mr-3 shrink-0 font-bold text-sm">
                         1
                       </div>
                       <div>
@@ -171,7 +93,7 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                      <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center mr-3 shrink-0 font-bold text-sm">
                         2
                       </div>
                       <div>
@@ -180,7 +102,7 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <div className="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                      <div className="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center mr-3 shrink-0 font-bold text-sm">
                         4
                       </div>
                       <div>
@@ -189,7 +111,7 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <div className="w-8 h-8 bg-yellow-100 text-yellow-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                      <div className="w-8 h-8 bg-yellow-100 text-yellow-700 rounded-full flex items-center justify-center mr-3 shrink-0 font-bold text-sm">
                         5
                       </div>
                       <div>
@@ -198,7 +120,7 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
                       </div>
                     </div>
                     <div className="flex items-start">
-                      <div className="w-8 h-8 bg-pink-100 text-pink-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                      <div className="w-8 h-8 bg-pink-100 text-pink-700 rounded-full flex items-center justify-center mr-3 shrink-0 font-bold text-sm">
                         8
                       </div>
                       <div>
@@ -258,230 +180,151 @@ export default function LevelDetailPage({ params }: LevelDetailPageProps) {
             </div>
           )}
 
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900">
-                  CYT Playbook
-                </h2>
-                <div className="space-y-8">
-                  {level.playbook.map((script, index) => (
-                    <div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="border-l-4 pl-6" style={{ borderColor: level.color }}>
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">{script.title}</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
-                              <svg className="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                              </svg>
-                              The &quot;Default&quot; Conversation
-                            </h4>
-                            <div className="bg-red-50 p-4 rounded-lg border border-red-100">
-                              <div className="text-gray-700 space-y-2 text-sm">
-                                {script.defaultResponse.conversation.map((line, i) => (
-                                  <p key={i} className="italic leading-relaxed">{formatText(line)}</p>
-                                ))}
-                              </div>
-                              <div className="mt-4 pt-3 border-t border-red-200">
-                                <p className="text-xs font-semibold text-gray-700 mb-1">Why this fails:</p>
-                                <p className="text-sm text-gray-600">{script.defaultResponse.analysis}</p>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
-                              <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                              </svg>
-                              The &quot;CYT Approach&quot;
-                            </h4>
-                            <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                              <div className="text-gray-800 space-y-2 text-sm">
-                                {script.cytApproach.conversation.map((line, i) => (
-                                  <p key={i} className="leading-relaxed">{formatText(line)}</p>
-                                ))}
-                              </div>
-                              <div className="mt-4 pt-3 border-t border-green-200">
-                                <p className="text-xs font-semibold text-gray-700 mb-1">Why this works:</p>
-                                <p className="text-sm text-gray-600">{script.cytApproach.analysis}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                CYT Playbook
+              </h2>
+              <div className="space-y-8">
+                {level.playbook.map((script, index) => (
+                  <ScriptCard key={index} script={script} accentColor={level.color} />
+                ))}
               </div>
+            </div>
 
-              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900">
-                  Improv Toolkit Prompts
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Use these prompts for breakout practice sessions:
-                </p>
-                <div className="space-y-4">
-                  {level.improvToolkitPrompts.map((prompt, index) => (
-                    <div
-                      key={index}
-                      className="border-l-4 pl-6 py-3"
-                      style={{ borderColor: level.color }}
-                    >
-                      <p className="text-gray-700 leading-relaxed">
-                        {prompt}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <LevelChallenge levelNumber={level.level} levelColor={level.color} />
-              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 flex items-center">
-                  <svg className="w-8 h-8 mr-3" style={{ color: level.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                  </svg>
-                  Your Action Plan: Implementing {level.coreTechnique.name}
-                </h2>
-                
-                <div className="space-y-6">
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Mental Map: The CYT Thought Process</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
-                          1
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">PAUSE before responding</p>
-                          <p className="text-sm text-gray-600">Take 2 seconds. Your first instinct is often to &quot;tell&quot; not &quot;discover&quot;</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
-                          2
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">DIAGNOSE the real problem</p>
-                          <p className="text-sm text-gray-600">Ask yourself: &quot;What are they <em>really</em> asking for? What&apos;s the need behind the request?&quot;</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
-                          3
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">FRAME your response using the technique</p>
-                          <p className="text-sm text-gray-600">
-                            {level.level === 1 && "Use 'What, So What, Now What' structure"}
-                            {level.level === 2 && "Ask open-ended questions: 'What,' 'How,' 'Why,' 'Can you walk me through...'"}
-                            {level.level >= 3 && `Apply ${level.coreTechnique.name} to guide the conversation`}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
-                          4
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">LISTEN actively to their answer</p>
-                          <p className="text-sm text-gray-600">Don&apos;t plan your next question. Actually hear what they&apos;re saying</p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
-                          5
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900">ADAPT and follow up</p>
-                          <p className="text-sm text-gray-600">Use their answer to ask your next diagnostic question</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">🎯 This Week&apos;s Practice</h3>
-                    <p className="text-gray-700 mb-4">
-                      Practice {level.coreTechnique.name} in these real-world situations:
+            <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                Improv Toolkit Prompts
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Use these prompts for breakout practice sessions:
+              </p>
+              <div className="space-y-4">
+                {level.improvToolkitPrompts.map((prompt, index) => (
+                  <div
+                    key={index}
+                    className="border-l-4 pl-6 py-3"
+                    style={{ borderColor: level.color }}
+                  >
+                    <p className="text-gray-700 leading-relaxed">
+                      {prompt}
                     </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-white p-4 rounded-lg shadow-sm">
-                        <h4 className="font-semibold text-gray-900 mb-2">💼 At Work</h4>
-                        <ul className="text-sm text-gray-700 space-y-2">
-                          <li>• In your next standup or 1-on-1</li>
-                          <li>• When receiving a vague task or request</li>
-                          <li>• During code review (giving or receiving)</li>
-                        </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <LevelChallenge levelNumber={level.level} levelColor={level.color} />
+            
+            <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+              <h2 className="text-3xl font-bold mb-6 text-gray-900 flex items-center">
+                <svg className="w-8 h-8 mr-3" style={{ color: level.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                Your Action Plan: Implementing {level.coreTechnique.name}
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Mental Map: The CYT Thought Process</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                        1
                       </div>
-                      <div className="bg-white p-4 rounded-lg shadow-sm">
-                        <h4 className="font-semibold text-gray-900 mb-2">🏠 In Life</h4>
-                        <ul className="text-sm text-gray-700 space-y-2">
-                          <li>• Explaining something technical to non-technical friends/family</li>
-                          <li>• Resolving a miscommunication or conflict</li>
-                          <li>• Making a decision with your partner/roommate</li>
-                        </ul>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">PAUSE before responding</p>
+                        <p className="text-sm text-gray-600">Take 2 seconds. Your first instinct is often to &quot;tell&quot; not &quot;discover&quot;</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                        2
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">DIAGNOSE the real problem</p>
+                        <p className="text-sm text-gray-600">Ask yourself: &quot;What are they <em>really</em> asking for? What&apos;s the need behind the request?&quot;</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                        3
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">FRAME your response using the technique</p>
+                        <p className="text-sm text-gray-600">
+                          {level.level === 1 && "Use 'What, So What, Now What' structure"}
+                          {level.level === 2 && "Ask open-ended questions: 'What,' 'How,' 'Why,' 'Can you walk me through...'"}
+                          {level.level >= 3 && `Apply ${level.coreTechnique.name} to guide the conversation`}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                        4
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">LISTEN actively to their answer</p>
+                        <p className="text-sm text-gray-600">Don&apos;t plan your next question. Actually hear what they&apos;re saying</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                        5
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900">ADAPT and follow up</p>
+                        <p className="text-sm text-gray-600">Use their answer to ask your next diagnostic question</p>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div className="border-2 rounded-lg p-6" style={{ borderColor: level.color }}>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">📋 Quick Reference Card</h3>
-                    <p className="text-sm text-gray-600 mb-4">Save this mental checklist for quick reference:</p>
-                    <div className="bg-gray-50 p-4 rounded font-mono text-sm">
-                      <p className="text-gray-900 mb-2">Before you speak, ask yourself:</p>
-                      <ul className="space-y-1 text-gray-700">
-                        <li>☐ Have I paused to think?</li>
-                        <li>☐ Am I about to &quot;tell&quot; instead of &quot;discover&quot;?</li>
-                        <li>☐ What&apos;s the real problem here?</li>
-                        <li>☐ What question would help me understand better?</li>
-                        <li>☐ Am I using {level.coreTechnique.name}?</li>
+                <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">🎯 This Week&apos;s Practice</h3>
+                  <p className="text-gray-700 mb-4">
+                    Practice {level.coreTechnique.name} in these real-world situations:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <h4 className="font-semibold text-gray-900 mb-2">💼 At Work</h4>
+                      <ul className="text-sm text-gray-700 space-y-2">
+                        <li>• In your next standup or 1-on-1</li>
+                        <li>• When receiving a vague task or request</li>
+                        <li>• During code review (giving or receiving)</li>
+                      </ul>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg shadow-sm">
+                      <h4 className="font-semibold text-gray-900 mb-2">🏠 In Life</h4>
+                      <ul className="text-sm text-gray-700 space-y-2">
+                        <li>• Explaining something technical to non-technical friends/family</li>
+                        <li>• Resolving a miscommunication or conflict</li>
+                        <li>• Making a decision with your partner/roommate</li>
                       </ul>
                     </div>
                   </div>
                 </div>
-              </div>
-          </div>
-        </div>
 
-        <div className="bg-white py-16 border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Explore Other Levels
-              </h2>
-              <p className="text-xl text-gray-600">
-                Your complete journey from beginner to expert
-              </p>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {curriculum.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/pathway/${p.id}`}
-                  className={`text-center p-6 rounded-xl border-2 transition-all ${
-                    p.id === level.id
-                      ? "border-current shadow-lg"
-                      : "border-gray-200 hover:border-gray-300 hover:shadow-md"
-                  }`}
-                  style={p.id === level.id ? { borderColor: p.color } : {}}
-                >
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3"
-                    style={{ backgroundColor: p.color }}
-                  >
-                    {p.level}
+                <div className="border-2 rounded-lg p-6" style={{ borderColor: level.color }}>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">📋 Quick Reference Card</h3>
+                  <p className="text-sm text-gray-600 mb-4">Save this mental checklist for quick reference:</p>
+                  <div className="bg-gray-50 p-4 rounded font-mono text-sm">
+                    <p className="text-gray-900 mb-2">Before you speak, ask yourself:</p>
+                    <ul className="space-y-1 text-gray-700">
+                      <li>☐ Have I paused to think?</li>
+                      <li>☐ Am I about to &quot;tell&quot; instead of &quot;discover&quot;?</li>
+                      <li>☐ What&apos;s the real problem here?</li>
+                      <li>☐ What question would help me understand better?</li>
+                      <li>☐ Am I using {level.coreTechnique.name}?</li>
+                    </ul>
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1 text-sm">
-                    {p.title}
-                  </h3>
-                </Link>
-              ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
+
+        <LevelNavigation curriculum={curriculum} currentLevel={level} />
       </div>
     </MainLayout>
   );
