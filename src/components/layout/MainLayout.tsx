@@ -52,31 +52,43 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                       Attendance
                     </Link>
                     <Link
-                      href="/curriculum"
+                      href="/cyt-framework"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Curriculum
+                      CYT Framework
                     </Link>
                     <Link
                       href="/pathway"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Pathways
+                      Curriculum
+                    </Link>
+                    <Link
+                      href="/scripts"
+                      className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
+                    >
+                      Script Library
                     </Link>
                   </>
                 ) : (
                   <>
                     <Link
+                      href="/cyt-framework"
+                      className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
+                    >
+                      CYT Framework
+                    </Link>
+                    <Link
                       href="/pathway"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Pathways
+                      Curriculum
                     </Link>
                     <Link
-                      href="/curriculum"
+                      href="/scripts"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Curriculum
+                      Script Library
                     </Link>
                     <a
                       href="https://discord.gg/pWGt6JMV9t"
@@ -187,18 +199,25 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                     Attendance
                   </Link>
                   <Link
-                    href="/curriculum"
+                    href="/cyt-framework"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Curriculum
+                    CYT Framework
                   </Link>
                   <Link
                     href="/pathway"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Pathways
+                    Curriculum
+                  </Link>
+                  <Link
+                    href="/scripts"
+                    className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Script Library
                   </Link>
                   <a
                     href="https://discord.gg/pWGt6JMV9t"
@@ -211,18 +230,25 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
               ) : (
                 <>
                   <Link
+                    href="/cyt-framework"
+                    className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    CYT Framework
+                  </Link>
+                  <Link
                     href="/pathway"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Pathways
+                    Curriculum
                   </Link>
                   <Link
-                    href="/curriculum"
+                    href="/scripts"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Curriculum
+                    Script Library
                   </Link>
                   <a
                     href="https://discord.gg/pWGt6JMV9t"

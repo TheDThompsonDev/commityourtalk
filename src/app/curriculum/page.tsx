@@ -1,6 +1,6 @@
 "use client";
 
-import { pathways, codeFeedbackFramework } from "@/lib/data/pathways";
+import { curriculum } from "@/lib/data/curriculum";
 import Link from "next/link";
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -32,14 +32,14 @@ export default function CurriculumPage() {
         <section className="py-16 sm:py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-16">
-            {pathways.map((pathway) => (
+            {curriculum.map((level) => (
                 <div
-                  key={pathway.id}
+                  key={level.id}
                   className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden"
                 >
                   <div
                     className="h-2"
-                    style={{ backgroundColor: pathway.color }}
+                    style={{ backgroundColor: level.color }}
                   ></div>
 
                   <div className="p-8 sm:p-10 lg:p-12">
@@ -48,31 +48,31 @@ export default function CurriculumPage() {
                         <div className="flex items-center gap-4 mb-4">
                           <div
                             className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xl"
-                            style={{ backgroundColor: pathway.color }}
+                            style={{ backgroundColor: level.color }}
                           >
-                            {pathway.level}
+                            {level.level}
                           </div>
                           <div>
                             <h2 className="text-3xl font-bold text-slate-900">
-                              {pathway.title}
+                              {level.title}
                             </h2>
                             <p className="text-lg text-slate-600">
-                              {pathway.subtitle}
+                              {level.subtitle}
                             </p>
                           </div>
                         </div>
                         <p className="text-lg text-slate-700 mb-4">
-                          {pathway.description}
+                          {level.description}
                         </p>
                         <p className="text-base text-slate-600 italic">
-                          Focus: {pathway.focus}
+                          Core Technique: {level.coreTechnique.name}
                         </p>
                       </div>
                       <Link
-                        href={`/pathway/${pathway.id}`}
+                        href={`/pathway/${level.id}`}
                         className="px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap text-center"
                         style={{
-                          backgroundColor: pathway.color,
+                          backgroundColor: level.color,
                           color: "white",
                         }}
                       >
@@ -83,116 +83,21 @@ export default function CurriculumPage() {
                     <div className="grid md:grid-cols-2 gap-8">
                       <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-4">
-                          Weekly Topics
+                          Playbook Scripts
                         </h3>
-                        <ul className="space-y-2">
-                          {pathway.weeklyTopics.map((topic, i) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-3 text-slate-700"
-                            >
-                              <svg
-                                className="w-5 h-5 mt-0.5 flex-shrink-0"
-                                style={{ color: pathway.color }}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <span>{topic}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-slate-600">
+                          {level.playbook.length} conversation scenarios with CYT approach
+                        </p>
                       </div>
 
                       <div>
                         <h3 className="text-xl font-bold text-slate-900 mb-4">
-                          Skills You&apos;ll Develop
+                          Improv Toolkit
                         </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {pathway.skillsDeveloped.map((skill, i) => (
-                            <span
-                              key={i}
-                              className="px-3 py-1 rounded-full text-sm font-medium text-white"
-                              style={{ backgroundColor: pathway.color }}
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
+                        <p className="text-slate-600">
+                          {level.improvToolkitPrompts.length} practice prompts for live sessions
+                        </p>
                       </div>
-                    </div>
-
-                    <div className="mt-8 pt-8 border-t border-gray-200">
-                      <h3 className="text-xl font-bold text-slate-900 mb-4">
-                        Goals & Challenges
-                      </h3>
-                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {pathway.goals.map((goal, i) => (
-                          <div
-                            key={i}
-                            className="p-4 rounded-lg bg-slate-50 border border-slate-200"
-                          >
-                            <div className="flex items-start gap-2">
-                              <svg
-                                className="w-5 h-5 mt-0.5 flex-shrink-0"
-                                style={{ color: pathway.color }}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                              </svg>
-                              <span className="text-sm font-medium text-slate-800">
-                                {goal}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-slate-900 text-white py-16 sm:py-20">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                {codeFeedbackFramework.title}
-              </h2>
-              <p className="text-xl text-slate-300">
-                {codeFeedbackFramework.description}
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6">
-              {codeFeedbackFramework.elements.map((element, index) => (
-                <div
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                      {element.letter}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">{element.word}</h3>
-                      <p className="text-slate-300 italic">
-                        &ldquo;{element.prompt}&rdquo;
-                      </p>
                     </div>
                   </div>
                 </div>

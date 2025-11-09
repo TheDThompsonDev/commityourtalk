@@ -1,51 +1,102 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { use } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import SessionAgenda from "@/components/curriculum/SessionAgenda";
-import { pathways } from "@/lib/data/pathways";
+import { curriculum } from "@/lib/data/curriculum";
+import { LevelChallenge } from "./levelChallenges";
 
-interface PathwayPageProps {
+interface LevelDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function PathwayDetailPage({ params }: PathwayPageProps) {
-  const { id } = await params;
-  const pathway = pathways.find((p) => p.id === id);
+const formatText = (text: string) => {
+  const formatted = text.replace(/^\d+\.\s*/, '');
+  
+  const processFormatting = (str: string): React.ReactNode[] => {
+    const result: React.ReactNode[] = [];
+    let currentIndex = 0;
+    
+    const regex = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)|(`([^`]+)`)/g;
+    let match;
+    
+    while ((match = regex.exec(str)) !== null) {
+      if (match.index > currentIndex) {
+        result.push(str.substring(currentIndex, match.index));
+      }
+      
+      if (match[1]) {
+        result.push(
+          <strong key={match.index} className="font-semibold text-gray-900">
+            {match[2]}
+          </strong>
+        );
+      } else if (match[3]) {
+        result.push(
+          <em key={match.index} className="italic">
+            {match[4]}
+          </em>
+        );
+      } else if (match[5]) {
+        result.push(
+          <code key={match.index} className="px-1.5 py-0.5 bg-gray-100 text-gray-800 rounded text-xs font-mono">
+            {match[6]}
+          </code>
+        );
+      }
+      
+      currentIndex = match.index + match[0].length;
+    }
+    
+    if (currentIndex < str.length) {
+      result.push(str.substring(currentIndex));
+    }
+    
+    return result;
+  };
+  
+  return <>{processFormatting(formatted)}</>;
+};
 
-  if (!pathway) {
+export default function LevelDetailPage({ params }: LevelDetailPageProps) {
+  const { id } = use(params);
+  const level = curriculum.find((l) => l.id === id);
+
+  if (!level) {
     notFound();
   }
 
   return (
     <MainLayout>
-      <div className="bg-gray-50 dark:bg-surface-1 min-h-screen">
+      <div className="bg-gray-50 min-h-screen">
         <div
           className="text-white py-24 relative overflow-hidden"
-          style={{ backgroundColor: pathway.color }}
+          style={{ backgroundColor: level.color }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="lg:col-span-2">
                 <div className="flex items-center mb-6">
                   <div className="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center mr-4 text-3xl font-bold shadow-lg">
-                    {pathway.level}
+                    {level.level}
                   </div>
                   <div>
                     <span className="text-white/90 text-sm font-semibold uppercase tracking-wider">
-                      Level {pathway.level}
+                      Level {level.level}
                     </span>
                     <h1 className="text-4xl md:text-5xl font-bold">
-                      {pathway.title}
+                      {level.title}
                     </h1>
                   </div>
                 </div>
 
                 <p className="text-3xl font-bold text-white/95 mb-6">
-                  {pathway.subtitle}
+                  {level.subtitle}
                 </p>
 
                 <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  {pathway.description}
+                  {level.description}
                 </p>
 
                 <div className="bg-white/15 backdrop-blur-sm rounded-xl p-6 mb-8">
@@ -63,104 +114,11 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    Focus Areas
+                    Core Technique: {level.coreTechnique.name}
                   </h3>
                   <p className="text-white/90 leading-relaxed">
-                    {pathway.focus}
+                    {level.coreTechnique.description}
                   </p>
-                </div>
-
-                <div className="flex gap-4">
-                  <a
-                    href="https://discord.gg/pWGt6JMV9t"
-                    className="bg-white text-gray-900 font-bold py-4 px-8 rounded-xl hover:bg-gray-100 transition-colors inline-flex items-center shadow-xl text-lg"
-                  >
-                    Start This Level
-                    <svg
-                      className="w-5 h-5 ml-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
-                  </a>
-                  {pathway.level > 1 && (
-                    <Link
-                      href={`/pathway/${pathway.level - 1}`}
-                      className="border-2 border-white text-white font-bold py-4 px-8 rounded-xl hover:bg-white/10 transition-colors inline-flex items-center"
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                      Previous Level
-                    </Link>
-                  )}
-                  {pathway.level < 5 && (
-                    <Link
-                      href={`/pathway/${pathway.level + 1}`}
-                      className="border-2 border-white text-white font-bold py-4 px-8 rounded-xl hover:bg-white/10 transition-colors inline-flex items-center"
-                    >
-                      Next Level
-                      <svg
-                        className="w-5 h-5 ml-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              <div className="lg:col-span-1">
-                <div className="bg-white/15 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
-                  <div className="text-center mb-6">
-                    <div className="text-6xl font-bold mb-3">
-                      {pathway.goals.length}
-                    </div>
-                    <div className="text-white/90 font-medium text-lg">
-                      Speaking Goals
-                    </div>
-                  </div>
-                  <div className="space-y-3 text-sm">
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">Skills to Develop</span>
-                      <span className="font-bold">
-                        {pathway.skillsDeveloped.length}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">Live Sessions</span>
-                      <span className="font-bold">Weekly in Discord</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/80">Community Support</span>
-                      <span className="font-bold">Peer Feedback</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -168,77 +126,210 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  Weekly Topics
-                </h2>
-                <div className="grid grid-cols-1 gap-4">
-                  {pathway.weeklyTopics.map((topic, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center p-4 bg-gray-50 dark:bg-surface-2 rounded-lg"
-                    >
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0"
-                        style={{ backgroundColor: pathway.color }}
-                      >
-                        {index + 1}
+          {level.level === 1 && (
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 mb-12 border-2 border-blue-200 shadow-xl">
+              <div className="flex items-start mb-6">
+                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                    Welcome to the CYT Approach
+                  </h2>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">The Core Philosophy</h3>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    <strong>Commit Your Talk</strong> is designed to transform software engineers into exceptional communicators and leaders. 
+                    We believe the single greatest gap in a technical career isn&apos;t coding skill; it&apos;s the ability to <strong>diagnose</strong> problems, 
+                    <strong>align</strong> teams, and <strong>articulate</strong> value.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed">
+                  The CYT Approach is a framework for becoming a technical diagnostician. This curriculum is built on a single premise: <strong>The best way to communicate is to stop <em>telling</em> and start <em>discovering</em>.</strong>
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-lg p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">Your Journey: The 5 Core Techniques</h3>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    An engineer who just gives answers vs An engineer who &quot;diagnoses&quot; and asks the right questions to uncover the <em>real</em> problem. 
+                    This creates inviting conversations, builds trust, and makes you the person who <em>actually</em> solves the problem, not just the ticket.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <div className="w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                        1
                       </div>
-                      <span className="text-gray-700 dark:text-muted font-medium">
-                        {topic}
-                      </span>
+                      <div>
+                        <p className="font-semibold text-gray-900">Level 1: Structured Framing</p>
+                        <p className="text-sm text-gray-600">How to organize your thoughts under pressure to build confidence and clarity.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                        2
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Level 2: Diagnostic Questions</p>
+                        <p className="text-sm text-gray-600">How to ask questions that uncover the <em>true</em> problem beneath the surface request.</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                        4
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Level 4: Impact Framing</p>
+                        <p className="text-sm text-gray-600">How to connect a technical problem to a business outcome (the &quot;so what?&quot;).</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-8 h-8 bg-yellow-100 text-yellow-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                        5
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Level 5: Collaborative Discovery</p>
+                        <p className="text-sm text-gray-600">How to guide someone to a solution so they feel ownership (the &quot;what if?&quot;).</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-8 h-8 bg-pink-100 text-pink-700 rounded-full flex items-center justify-center mr-3 flex-shrink-0 font-bold text-sm">
+                        8
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">Level 8: Vision Casting</p>
+                        <p className="text-sm text-gray-600">How to inspire action by painting a clear, compelling picture of the future.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-6 shadow-sm border-l-4 border-blue-600">
+                  <p className="text-gray-800 leading-relaxed font-medium italic">
+                    &quot;This curriculum is your path from a junior developer who <strong>answers tickets</strong> to a leader who <strong>defines the work</strong>. This will change your career and your life.&quot;
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {level.level > 1 && (
+            <div className="bg-white rounded-2xl p-8 mb-12 border border-gray-200 shadow-lg">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Building on Your Foundation
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                {level.level === 2 && (
+                  <>Now that you have a structure (Structured Framing from Level 1), you&apos;ll learn the most important skill in engineering: <strong>Diagnostic Questions</strong>. Your job isn&apos;t to be a &quot;feature factory&quot; but a &quot;problem-solver.&quot; This level teaches you to stop taking requests at face value and start asking the questions that uncover the <em>real</em> problem.</>
+                )}
+                {level.level === 3 && (
+                  <>This is where we apply your new skills (Structured Framing + Diagnostic Questions) to the most common—and most dangerous—conversations you&apos;ll have: talking to your peers. This level is all about <strong>handling difficult conversations</strong> about code, ideas, and feedback, both as the giver and the receiver.</>
+                )}
+                {level.level === 4 && (
+                  <>This level is where you transition from &quot;doer&quot; to &quot;multiplier.&quot; Your value is no longer just the code you write; it&apos;s your ability to make <em>other engineers</em> better. You&apos;ll master the art of teaching by asking, not telling, using <strong>Impact Framing</strong> to connect technical choices to real-world consequences.</>
+                )}
+                {level.level === 5 && (
+                  <>You&apos;re now moving into leadership. This level is about handling difficult conversations <em>up and across</em>. You&apos;ll learn to manage your manager, mediate conflict, and advocate for your team using <strong>Collaborative Discovery</strong> to guide stakeholders to solutions where they feel ownership.</>
+                )}
+                {level.level === 6 && (
+                  <>Your focus now expands outside your team. You will learn to speak the language of Product, Design, and Marketing. This is where you master <strong>Impact Framing</strong> to translate technical work into <em>business value</em>—the #1 skill of all Staff-plus and Principal engineers.</>
+                )}
+                {level.level === 7 && (
+                  <>You are now operating at the Staff/Principal level. Your job is no longer to <em>work on</em> the system; your job is to <em>redesign</em> the system. This means influencing company-wide strategy, leading large-scale initiatives, and combining <strong>all CYT techniques</strong> to drive organizational change.</>
+                )}
+                {level.level === 8 && (
+                  <>Your influence now extends beyond your company. This level is about building your professional brand, crafting impactful presentations, and inspiring innovation using <strong>Vision Casting</strong>—painting a clear, compelling, and emotional picture of the future.</>
+                )}
+                {level.level === 9 && (
+                  <>Your focus is now on <em>scale</em>. How do you take your &quot;big idea&quot; from Level 8 and build a community or a movement around it? This level is about leading open-source projects, building a content brand, and shaping industry conversations through masterful <strong>Vision Casting</strong>.</>
+                )}
+                {level.level === 10 && (
+                  <>This is the capstone. You will now combine <strong>all 5 CYT techniques</strong>—Framing, Diagnosis, Impact, Discovery, and Vision—to deliver high-stakes keynotes that don&apos;t just <em>inform</em> an audience, but <em>change</em> them.</>
+                )}
+              </p>
+            </div>
+          )}
+
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                  CYT Playbook
+                </h2>
+                <div className="space-y-8">
+                  {level.playbook.map((script, index) => (
+                    <div key={index} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="border-l-4 pl-6" style={{ borderColor: level.color }}>
+                        <h3 className="text-xl font-bold text-gray-900 mb-4">{script.title}</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                              <svg className="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                              </svg>
+                              The &quot;Default&quot; Conversation
+                            </h4>
+                            <div className="bg-red-50 p-4 rounded-lg border border-red-100">
+                              <div className="text-gray-700 space-y-2 text-sm">
+                                {script.defaultResponse.conversation.map((line, i) => (
+                                  <p key={i} className="italic leading-relaxed">{formatText(line)}</p>
+                                ))}
+                              </div>
+                              <div className="mt-4 pt-3 border-t border-red-200">
+                                <p className="text-xs font-semibold text-gray-700 mb-1">Why this fails:</p>
+                                <p className="text-sm text-gray-600">{script.defaultResponse.analysis}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="font-semibold text-gray-800 mb-2 flex items-center">
+                              <svg className="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              The &quot;CYT Approach&quot;
+                            </h4>
+                            <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                              <div className="text-gray-800 space-y-2 text-sm">
+                                {script.cytApproach.conversation.map((line, i) => (
+                                  <p key={i} className="leading-relaxed">{formatText(line)}</p>
+                                ))}
+                              </div>
+                              <div className="mt-4 pt-3 border-t border-green-200">
+                                <p className="text-xs font-semibold text-gray-700 mb-1">Why this works:</p>
+                                <p className="text-sm text-gray-600">{script.cytApproach.analysis}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  Speaking Goals
+              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900">
+                  Improv Toolkit Prompts
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pathway.goals.map((goal, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start p-4 bg-gray-50 dark:bg-surface-2 rounded-lg"
-                    >
-                      <svg
-                        className="w-6 h-6 mr-3 shrink-0 mt-0.5"
-                        style={{ color: pathway.color }}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-gray-700 dark:text-muted font-medium">
-                        {goal}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  Impromptu Toolkit Prompts
-                </h2>
-                <p className="text-gray-600 dark:text-muted mb-6">
+                <p className="text-gray-600 mb-6">
                   Use these prompts for breakout practice sessions:
                 </p>
                 <div className="space-y-4">
-                  {pathway.improvToolkitPrompts.map((prompt, index) => (
+                  {level.improvToolkitPrompts.map((prompt, index) => (
                     <div
                       key={index}
                       className="border-l-4 pl-6 py-3"
-                      style={{ borderColor: pathway.color }}
+                      style={{ borderColor: level.color }}
                     >
-                      <p className="text-gray-700 dark:text-muted leading-relaxed">
+                      <p className="text-gray-700 leading-relaxed">
                         {prompt}
                       </p>
                     </div>
@@ -246,181 +337,136 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-card rounded-2xl p-8 mb-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  Experimental Challenges
-                </h2>
-                <p className="text-gray-600 dark:text-muted mb-6">
-                  Interactive group exercises to push your skills:
-                </p>
-                <div className="space-y-6">
-                  {pathway.experimentalChallenges.map((challenge, index) => (
-                    <div
-                      key={index}
-                      className="border-l-4 pl-6 py-4 bg-gray-50 dark:bg-surface-2 rounded-r-lg"
-                      style={{ borderColor: pathway.color }}
-                    >
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-strong mb-2">
-                        {challenge.title}
-                      </h3>
-                      <p className="text-gray-700 dark:text-muted leading-relaxed">
-                        {challenge.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-white dark:bg-card rounded-2xl p-8 border border-gray-100 dark:border-custom shadow-lg">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  Skills You&apos;ll Develop
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pathway.skillsDeveloped.map((skill, index) => (
-                    <div key={index} className="flex items-center">
-                      <svg
-                        className="w-6 h-6 mr-3 shrink-0"
-                        style={{ color: pathway.color }}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="text-gray-700 dark:text-muted font-medium">
-                        {skill}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <SessionAgenda accentColor={pathway.color} />
-            </div>
-
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-card rounded-2xl p-6 mb-6 border border-gray-100 dark:border-custom shadow-lg sticky top-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-strong">
-                  How It Works
-                </h2>
-                <div className="space-y-6">
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#3685ff] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
-                      1
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">
-                        Join Discord
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">
-                        Connect with our supportive community of developer
-                        speakers
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#FF5F87] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
-                      2
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">
-                        Choose Your Challenge
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">
-                        Pick a prompt or experimental challenge to practice
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#19C37D] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
-                      3
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">
-                        Present Live
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">
-                        Share your talk in our weekly practice sessions
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#FFB020] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
-                      4
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">
-                        Get Feedback
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">
-                        Receive constructive, encouraging feedback from peers
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-[#F04438] rounded-full flex items-center justify-center text-white font-bold mr-4 shrink-0">
-                      5
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gray-900 dark:text-strong mb-1">
-                        Level Up
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-muted">
-                        Complete all challenges and move to the next level
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <a
-                  href="https://discord.gg/pWGt6JMV9t"
-                  className="w-full mt-8 font-bold py-4 px-6 rounded-xl transition-colors inline-flex items-center justify-center"
-                  style={{ backgroundColor: pathway.color, color: "white" }}
-                >
-                  Join Practice Sessions
-                  <svg
-                    className="w-5 h-5 ml-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
+              <LevelChallenge levelNumber={level.level} levelColor={level.color} />
+              <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-100 shadow-lg">
+                <h2 className="text-3xl font-bold mb-6 text-gray-900 flex items-center">
+                  <svg className="w-8 h-8 mr-3" style={{ color: level.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                   </svg>
-                </a>
+                  Your Action Plan: Implementing {level.coreTechnique.name}
+                </h2>
+                
+                <div className="space-y-6">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">Mental Map: The CYT Thought Process</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                          1
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">PAUSE before responding</p>
+                          <p className="text-sm text-gray-600">Take 2 seconds. Your first instinct is often to &quot;tell&quot; not &quot;discover&quot;</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                          2
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">DIAGNOSE the real problem</p>
+                          <p className="text-sm text-gray-600">Ask yourself: &quot;What are they <em>really</em> asking for? What&apos;s the need behind the request?&quot;</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                          3
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">FRAME your response using the technique</p>
+                          <p className="text-sm text-gray-600">
+                            {level.level === 1 && "Use 'What, So What, Now What' structure"}
+                            {level.level === 2 && "Ask open-ended questions: 'What,' 'How,' 'Why,' 'Can you walk me through...'"}
+                            {level.level >= 3 && `Apply ${level.coreTechnique.name} to guide the conversation`}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                          4
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">LISTEN actively to their answer</p>
+                          <p className="text-sm text-gray-600">Don&apos;t plan your next question. Actually hear what they&apos;re saying</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 font-bold text-white" style={{ backgroundColor: level.color }}>
+                          5
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-900">ADAPT and follow up</p>
+                          <p className="text-sm text-gray-600">Use their answer to ask your next diagnostic question</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">🎯 This Week&apos;s Practice</h3>
+                    <p className="text-gray-700 mb-4">
+                      Practice {level.coreTechnique.name} in these real-world situations:
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-white p-4 rounded-lg shadow-sm">
+                        <h4 className="font-semibold text-gray-900 mb-2">💼 At Work</h4>
+                        <ul className="text-sm text-gray-700 space-y-2">
+                          <li>• In your next standup or 1-on-1</li>
+                          <li>• When receiving a vague task or request</li>
+                          <li>• During code review (giving or receiving)</li>
+                        </ul>
+                      </div>
+                      <div className="bg-white p-4 rounded-lg shadow-sm">
+                        <h4 className="font-semibold text-gray-900 mb-2">🏠 In Life</h4>
+                        <ul className="text-sm text-gray-700 space-y-2">
+                          <li>• Explaining something technical to non-technical friends/family</li>
+                          <li>• Resolving a miscommunication or conflict</li>
+                          <li>• Making a decision with your partner/roommate</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-2 rounded-lg p-6" style={{ borderColor: level.color }}>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">📋 Quick Reference Card</h3>
+                    <p className="text-sm text-gray-600 mb-4">Save this mental checklist for quick reference:</p>
+                    <div className="bg-gray-50 p-4 rounded font-mono text-sm">
+                      <p className="text-gray-900 mb-2">Before you speak, ask yourself:</p>
+                      <ul className="space-y-1 text-gray-700">
+                        <li>☐ Have I paused to think?</li>
+                        <li>☐ Am I about to &quot;tell&quot; instead of &quot;discover&quot;?</li>
+                        <li>☐ What&apos;s the real problem here?</li>
+                        <li>☐ What question would help me understand better?</li>
+                        <li>☐ Am I using {level.coreTechnique.name}?</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-card py-16 border-t border-gray-100 dark:border-custom">
+        <div className="bg-white py-16 border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-strong mb-4">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 Explore Other Levels
               </h2>
-              <p className="text-xl text-gray-600 dark:text-muted">
+              <p className="text-xl text-gray-600">
                 Your complete journey from beginner to expert
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-              {pathways.map((p) => (
+              {curriculum.map((p) => (
                 <Link
                   key={p.id}
                   href={`/pathway/${p.id}`}
                   className={`text-center p-6 rounded-xl border-2 transition-all ${
-                    p.id === pathway.id
+                    p.id === level.id
                       ? "border-current shadow-lg"
-                      : "border-gray-200 dark:border-custom hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md"
+                      : "border-gray-200 hover:border-gray-300 hover:shadow-md"
                   }`}
-                  style={p.id === pathway.id ? { borderColor: p.color } : {}}
+                  style={p.id === level.id ? { borderColor: p.color } : {}}
                 >
                   <div
                     className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3"
@@ -428,12 +474,9 @@ export default async function PathwayDetailPage({ params }: PathwayPageProps) {
                   >
                     {p.level}
                   </div>
-                  <h3 className="font-bold text-gray-900 dark:text-strong mb-1 text-sm">
+                  <h3 className="font-bold text-gray-900 mb-1 text-sm">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-gray-600 dark:text-muted">
-                    {p.goals.length} goals
-                  </p>
                 </Link>
               ))}
             </div>

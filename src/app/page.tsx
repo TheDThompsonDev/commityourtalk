@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -70,8 +71,8 @@ export default function Home() {
           <div className="absolute top-1/3 right-20 w-2 h-2 bg-yellow-400/20 rounded-full animate-bounce delay-2000"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="transition-all duration-1000 opacity-100 translate-y-0 text-center lg:text-left">
               <div className="inline-flex items-center px-3 sm:px-4 py-2 bg-white/10 border border-white/20 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm font-semibold text-blue-200">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
@@ -84,9 +85,9 @@ export default function Home() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-4 sm:mb-0">
-                Practice public speaking
+                Software devs and others in tech
                 <br />
-                <span className="text-blue-300">in live sessions</span>
+                <span className="text-blue-300">Practice live public speaking</span>
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-slate-200 mt-4 sm:mt-6 max-w-2xl mx-auto lg:mx-0">
@@ -202,8 +203,8 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative transition-all duration-1000 delay-300 opacity-100 translate-y-0 mt-8 lg:mt-0 lg:max-w-md">
-              <div className="relative bg-white/5 rounded-xl p-3 sm:p-4 shadow-xl border border-white/10">
+            <div className="relative transition-all duration-1000 delay-300 opacity-100 translate-y-0 mt-8 lg:mt-0 lg:max-w-2xl">
+              <div className="relative bg-white/5 rounded-xl p-4 sm:p-6 shadow-xl border border-white/10">
                 <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full font-bold text-xs shadow-2xl shadow-blue-500/30">
                   <div className="flex items-center gap-1 sm:gap-2">
                     <svg
@@ -250,57 +251,98 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="bg-white/5 rounded-lg p-2.5 sm:p-3 mb-2.5 border border-white/10">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] sm:text-xs font-semibold text-white">
+                <div className="bg-white/5 rounded-lg p-4 sm:p-5 mb-3 border border-white/10">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs sm:text-sm font-semibold text-white">
                       Breakout Rooms
                     </span>
                     <div className="flex items-center gap-1">
                       <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-[10px] text-slate-300">
+                      <span className="text-xs text-slate-300">
                         24 practicing
                       </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-1">
-                    {[...Array(6)].map((_, roomIndex) => (
-                      <div
-                        key={roomIndex}
-                        className="bg-white/5 rounded p-1 sm:p-1.5 border border-white/10 hover:border-white/20 transition-all"
-                      >
-                        <div className="flex items-center justify-between mb-0.5">
-                          <span className="text-[9px] sm:text-[10px] font-semibold text-white/80">
-                            R{roomIndex + 1}
-                          </span>
-                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-green-400 rounded-full"></div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[...Array(6)].map((_, roomIndex) => {
+                      const participantImages = [
+                        "/heroImages/1.png",
+                        "/heroImages/2.png",
+                        "/heroImages/3.png",
+                        "/heroImages/4.png",
+                        "/heroImages/5.png",
+                        "/heroImages/6.png",
+                        "/heroImages/7.png",
+                        "/heroImages/8.png",
+                        "/heroImages/9.png",
+                        "/heroImages/10.png",
+                        "/heroImages/11.png",
+                        "/heroImages/12.png",
+                        "/heroImages/13.png",
+                        "/heroImages/14.png",
+                        "/heroImages/15.png",
+                        "/heroImages/16.png",
+                        "/heroImages/17.png",
+                        "/heroImages/18.png",
+                        "/heroImages/19.png",
+                        "/heroImages/20.png",
+                      ];
+                      
+                      return (
+                        <div
+                          key={roomIndex}
+                          className="bg-white/5 rounded p-2 sm:p-2.5 border border-white/10 hover:border-white/20 transition-all"
+                        >
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-[10px] sm:text-xs font-semibold text-white/80">
+                              R{roomIndex + 1}
+                            </span>
+                            <div className="w-1 h-1 bg-green-400 rounded-full"></div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-1.5">
+                            {[...Array(4)].map((_, personIndex) => {
+                              const imageIndex = roomIndex * 4 + personIndex;
+                              const hasImage = imageIndex < participantImages.length;
+                              
+                              return hasImage ? (
+                                <div
+                                  key={personIndex}
+                                  className="w-full aspect-square rounded overflow-hidden border border-white/20 relative"
+                                >
+                                  <Image
+                                    src={participantImages[imageIndex]}
+                                    alt={`Participant ${imageIndex + 1}`}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 640px) 40px, 60px"
+                                  />
+                                </div>
+                              ) : (
+                                <div
+                                  key={personIndex}
+                                  className={`w-full aspect-square rounded ${
+                                    personIndex === 0
+                                      ? "bg-blue-600"
+                                      : personIndex === 1
+                                        ? "bg-pink-600"
+                                        : personIndex === 2
+                                          ? "bg-green-600"
+                                          : "bg-purple-600"
+                                  } flex items-center justify-center text-white text-[10px] sm:text-xs font-bold border border-white/20`}
+                                >
+                                  {String.fromCharCode(65 + imageIndex)}
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-0.5">
-                          {[...Array(4)].map((_, personIndex) => (
-                            <div
-                              key={personIndex}
-                              className={`w-full aspect-square rounded-sm ${
-                                personIndex === 0
-                                  ? "bg-blue-600"
-                                  : personIndex === 1
-                                    ? "bg-pink-600"
-                                    : personIndex === 2
-                                      ? "bg-green-600"
-                                      : "bg-purple-600"
-                              } flex items-center justify-center text-white text-[9px] sm:text-[10px] font-bold border border-white/20`}
-                            >
-                              {String.fromCharCode(
-                                65 + roomIndex * 4 + personIndex
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
-                  <div className="mt-1.5 text-center">
-                    <p className="text-[9px] sm:text-[10px] text-slate-400">
+                  <div className="mt-2.5 text-center">
+                    <p className="text-[10px] sm:text-xs text-slate-400">
                       Small groups of 4 for practice & feedback
                     </p>
                   </div>
@@ -1068,7 +1110,7 @@ export default function Home() {
               </svg>
             </Link>
             <p className="mt-4 text-gray-600 text-sm">
-              Explore all 5 levels with detailed session guides
+              Explore all 10 levels with detailed session guides
             </p>
           </div>
         </div>
@@ -1086,7 +1128,7 @@ export default function Home() {
               How it works
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-              A clear progression through five levels of speaking mastery
+              A clear progression through ten levels of speaking mastery
             </p>
           </div>
 
@@ -1136,7 +1178,7 @@ export default function Home() {
                 {
                   level: 3,
                   title: "Level up",
-                  note: "Feedback + progress through 5 levels",
+                  note: "Feedback + progress through 10 levels",
                   icon: (
                     <svg
                       className="w-8 h-8"

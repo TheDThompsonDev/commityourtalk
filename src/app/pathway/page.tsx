@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import PathwayCard from "@/components/curriculum/PathwayCard";
+import LevelCard from "@/components/curriculum/LevelCard";
 import SessionAgenda from "@/components/curriculum/SessionAgenda";
-import { pathways } from "@/lib/data/pathways";
+import { curriculum } from "@/lib/data/curriculum";
 
 export default function PathwayPage() {
   const [activeId, setActiveId] = useState<string>("overview");
@@ -50,19 +50,17 @@ export default function PathwayPage() {
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center px-3 py-1.5 bg-white/10 border border-white/20 rounded-full mb-6 text-xs font-semibold text-blue-200">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
-                  5-Level Progressive Pathway
+                  10-Level Progressive Curriculum
                 </div>
 
                 <h1 className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
-                  From nervous beginner
+                  The Pathway to
                   <br />
-                  <span className="text-blue-300">to confident speaker</span>
+                  <span className="text-blue-300">Exceptional Communication</span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-slate-200 mt-6 max-w-2xl">
-                  Join a structured journey through live Discord practice.
-                  Advance through five focused levels and build lasting
-                  confidence.
+                  A structured journey to transform software engineers into exceptional communicators and leaders. Master the core techniques to diagnose problems, align teams, and articulate value.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mt-10">
@@ -107,34 +105,28 @@ export default function PathwayPage() {
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-white font-semibold">
-                      Pathway Roadmap
+                      Curriculum Roadmap
                     </h3>
                     <span className="text-blue-200 text-xs font-medium">
-                      5 levels
+                      10 levels
                     </span>
                   </div>
                   <ul className="space-y-3">
-                    {[
-                      { lvl: 1, title: "Foundation", note: "2-min talks" },
-                      { lvl: 2, title: "Mastery", note: "5-min talks" },
-                      { lvl: 3, title: "Leadership", note: "10-min talks" },
-                      { lvl: 4, title: "Innovation", note: "20-min talks" },
-                      { lvl: 5, title: "Expertise", note: "45-min talks" },
-                    ].map((s) => (
+                    {curriculum.map((level) => (
                       <li
-                        key={s.lvl}
+                        key={level.level}
                         className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3 border border-white/10"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">
-                            {s.lvl}
+                            {level.level}
                           </div>
                           <div>
                             <div className="text-white font-semibold">
-                              {s.title}
+                              {level.title}
                             </div>
                             <div className="text-slate-300 text-xs">
-                              {s.note}
+                              {level.subtitle}
                             </div>
                           </div>
                         </div>
@@ -276,18 +268,17 @@ export default function PathwayPage() {
                 How It Works
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                A clear progression through five levels of speaking mastery
+                A clear progression through ten levels of speaking mastery
               </p>
             </div>
 
             <div className="max-w-5xl mx-auto">
               <ol className="relative flex flex-col md:flex-row md:items-start md:justify-between gap-8 md:gap-4">
                 {[
-                  { level: 1, title: "Foundation", note: "2-min talks" },
-                  { level: 2, title: "Mastery", note: "5-min talks" },
-                  { level: 3, title: "Leadership", note: "10-min talks" },
-                  { level: 4, title: "Innovation", note: "20-min talks" },
-                  { level: 5, title: "Expertise", note: "45-min talks" },
+                  { level: 1, title: "Foundation", note: "Levels 1-2" },
+                  { level: 2, title: "Collaboration", note: "Levels 3-4" },
+                  { level: 3, title: "Leadership", note: "Levels 5-7" },
+                  { level: 4, title: "Innovation", note: "Levels 8-10" },
                 ].map((s, idx) => (
                   <li key={s.level} className="md:flex-1">
                     <div className="flex items-center gap-3">
@@ -301,7 +292,7 @@ export default function PathwayPage() {
                         <div className="text-xs text-gray-600">{s.note}</div>
                       </div>
                     </div>
-                    {idx < 4 && (
+                    {idx < 3 && (
                       <div className="hidden md:block h-1 bg-gray-200 rounded-full mt-4">
                         <div
                           className="h-1 bg-blue-600 rounded-full"
@@ -670,7 +661,7 @@ export default function PathwayPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                All 5 Levels in Detail
+                All 10 Levels in Detail
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Explore each level to see what challenges and skills you&apos;ll
@@ -679,9 +670,9 @@ export default function PathwayPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-              {pathways.map((pathway) => (
-                <div key={pathway.id} className="h-full">
-                  <PathwayCard pathway={pathway} />
+              {curriculum.map((level) => (
+                <div key={level.id} className="h-full">
+                  <LevelCard level={level} />
                 </div>
               ))}
             </div>
