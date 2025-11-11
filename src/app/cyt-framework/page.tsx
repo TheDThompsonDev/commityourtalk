@@ -375,7 +375,7 @@ export default function CYTFrameworkPage() {
               Explore our 10-level curriculum to transform from a junior developer who answers tickets to a leader who defines the work.
             </p>
             <Link
-              href="/pathway"
+              href="/curriculum"
               className="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg"
             >
               Explore the Curriculum →

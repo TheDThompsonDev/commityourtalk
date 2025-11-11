@@ -117,7 +117,7 @@ export default function Home() {
                   </svg>
                 </Link>
                 <Link
-                  href="/pathway"
+                  href="/curriculum"
                   className="bg-transparent hover:bg-white/10 text-white font-semibold px-6 sm:px-8 py-4 sm:py-5 rounded-lg transition-colors inline-flex items-center justify-center border border-white/30 text-sm sm:text-base"
                 >
                   <span className="hidden sm:inline">See How It Works</span>
@@ -1020,8 +1020,8 @@ export default function Home() {
               </span>
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-              Progress through 5 structured levels—from your first 2-minute talk
-              to 45-minute keynotes
+              Progress through 10 structured levels, from your first 2-minute talk
+              to conference keynotes
             </p>
           </div>
 
@@ -1091,7 +1091,7 @@ export default function Home() {
 
           <div className="text-center">
             <Link
-              href="/pathway"
+              href="/curriculum"
               className="group inline-flex items-center bg-slate-900 hover:bg-slate-800 text-white font-bold px-10 py-5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               <span>View Complete Pathway</span>

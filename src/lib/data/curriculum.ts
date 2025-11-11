@@ -82,7 +82,7 @@ export const curriculum: readonly CurriculumLevel[] = [
     id: "level-2-the-architects-articulation",
     level: 2,
     title: "The Architect's Articulation",
-    subtitle: "Mastering Technical Explanations",
+    subtitle: "Developing Technical Explanations",
     description: "Now that you have a structure, you'll learn the most important skill in engineering: Diagnostic Questions. Your job isn't to be a 'feature factory' but a 'problem-solver.' This level teaches you to stop taking requests at face value and start asking the questions that uncover the real problem.",
     coreTechnique: {
       name: "Diagnostic Questions",
@@ -161,8 +161,8 @@ export const curriculum: readonly CurriculumLevel[] = [
     id: "level-3-the-collaborators-craft",
     level: 3,
     title: "The Collaborator's Craft",
-    subtitle: "Mastering Peer Communication",
-    description: "This is where we apply your new skills to the most common—and most dangerous—conversations you'll have: talking to your peers. This level is all about handling difficult conversations about code, ideas, and feedback, both as the giver and the receiver.",
+    subtitle: "Advancing Peer Communication",
+    description: "This is where we apply your new skills to the most common (and most dangerous) conversations you'll have: talking to your peers. This level is all about handling difficult conversations about code, ideas, and feedback, both as the giver and the receiver.",
     coreTechnique: {
       name: "Diagnostic Questions + Structured Framing",
       description: "Combining diagnostic questions with structured framing to handle difficult peer conversations effectively."
@@ -487,7 +487,7 @@ export const curriculum: readonly CurriculumLevel[] = [
     description: "Master communication across organizational boundaries. Learn to align diverse stakeholders, translate between technical and business perspectives, and drive cross-functional collaboration.",
     coreTechnique: {
       name: "Impact Framing (Mastery Level)",
-      description: "Translating technical work into business value—the #1 skill of all Staff-plus and Principal engineers."
+      description: "Translating technical work into business value: the #1 skill of all Staff-plus and Principal engineers."
     },
     playbook: [
       {
@@ -619,7 +619,7 @@ export const curriculum: readonly CurriculumLevel[] = [
         cytApproach: {
           conversation: [
             "(In a presentation to executives) \"Good afternoon. I've spent the last month analyzing our engineering velocity, and I've created a data-driven proposal to increase our feature output by 40%.\"",
-            "(Impact Frame) \"My analysis is simple: Right now, we spend 60% of our engineering hours on 'unplanned work'—fixing bugs and system outages. This is costing us $1.2 million in lost productivity per year.\"",
+            "(Impact Frame) \"My analysis is simple: Right now, we spend 60% of our engineering hours on 'unplanned work' (fixing bugs and system outages). This is costing us $1.2 million in lost productivity per year.\"",
             "(Collaborative Discovery) \"What if we could 'buy back' half of that time?\"",
             "(Solution) \"I'm proposing 'Project Velocity.' We will dedicate a small team for one quarter to fix the 5 'hotspots' that cause 80% of this pain. This is a one-time investment to buy back 30% of our engineering time, forever.\""
           ],
@@ -697,7 +697,7 @@ export const curriculum: readonly CurriculumLevel[] = [
             "(Structured Frame)",
             "**What (The Decision):** As a company, we are standardizing on [New Tool X].",
             "**So What (The Impact):** This means our team will be migrating off of [Old Tool Y] over the next quarter. I know this is a big change. The reason for this is that [Tool X] saves the company [$Z] and [solves Y problem] for the Legal team.",
-            "**Now What (The Plan):** My job is not to debate the 'why'—that's decided. My job is to make this transition as painless as possible for this team.",
+            "**Now What (The Plan):** My job is not to debate the 'why'. That's decided. My job is to make this transition as painless as possible for this team.",
             "\"So, I need your help. Let's use this meeting to map out all the risks and 'gotchas' so I can build a realistic plan.\""
           ],
           analysis: "You've shown leadership by supporting the decision while channeling the team's energy into constructive problem-solving."
@@ -904,7 +904,7 @@ export const curriculum: readonly CurriculumLevel[] = [
             "(On Twitter, replying to the critic) \"Hey [Name], that's a really sharp observation.\"",
             "(Acknowledge & Reframe) \"You're 100% right that the 'simple' example doesn't account for [X]. That's a tradeoff we made for a cleaner 'getting started' guide.\"",
             "\"The advanced way to handle [X] is in our 'pro' docs here [link].\"",
-            "\"You've actually pointed out that our docs could be clearer on this. Thank you—you've just helped us make the project better.\""
+            "\"You've actually pointed out that our docs could be clearer on this. Thank you. You've just helped us make the project better.\""
           ],
           analysis: "You've turned criticism into appreciation, demonstrated humility, and made a critic into a potential contributor."
         }
@@ -947,7 +947,7 @@ export const curriculum: readonly CurriculumLevel[] = [
     description: "Master the art of high-stakes presentations. Learn to command large audiences, deliver powerful keynotes, and contribute meaningfully to the wider tech community.",
     coreTechnique: {
       name: "All 5 CYT Techniques Combined",
-      description: "Combining all techniques—Framing, Diagnosis, Impact, Discovery, and Vision—to deliver transformative keynotes."
+      description: "Combining all techniques (Framing, Diagnosis, Impact, Discovery, and Vision) to deliver transformative keynotes."
     },
     playbook: [
       {

@@ -24,7 +24,7 @@ export default function LevelNavigation({ curriculum, currentLevel }: LevelNavig
           {curriculum.map((p) => (
             <Link
               key={p.id}
-              href={`/pathway/${p.id}`}
+              href={`/curriculum/${p.id}`}
               className={`text-center p-6 rounded-xl border-2 transition-all ${
                 p.id === currentLevel.id
                   ? "border-current shadow-lg"

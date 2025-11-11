@@ -167,7 +167,7 @@ export default async function DashboardPage() {
                     narrative.
                   </p>
                   <Link
-                    href="/pathway"
+                    href="/curriculum"
                     className="inline-flex items-center bg-[#3685ff] hover:bg-[#2870E5] text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-lg shadow-blue-500/25"
                   >
                     Continue Learning

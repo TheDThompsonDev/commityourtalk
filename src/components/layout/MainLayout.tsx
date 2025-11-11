@@ -58,7 +58,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                       CYT Framework
                     </Link>
                     <Link
-                      href="/pathway"
+                      href="/curriculum"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
                       Curriculum
@@ -67,7 +67,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                       href="/scripts"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Script Library
+                      Scripts
                     </Link>
                   </>
                 ) : (
@@ -79,7 +79,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                       CYT Framework
                     </Link>
                     <Link
-                      href="/pathway"
+                      href="/curriculum"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
                       Curriculum
@@ -88,7 +88,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                       href="/scripts"
                       className="text-gray-600 hover:text-gray-900 text-sm font-semibold transition-colors"
                     >
-                      Script Library
+                      Scripts
                     </Link>
                     <a
                       href="https://discord.gg/pWGt6JMV9t"
@@ -206,7 +206,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                     CYT Framework
                   </Link>
                   <Link
-                    href="/pathway"
+                    href="/curriculum"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -217,7 +217,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Script Library
+                    Scripts
                   </Link>
                   <a
                     href="https://discord.gg/pWGt6JMV9t"
@@ -237,7 +237,7 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
                     CYT Framework
                   </Link>
                   <Link
-                    href="/pathway"
+                    href="/curriculum"
                     className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg text-base font-semibold"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -350,10 +350,10 @@ export default function MainLayout({ children, user }: MainLayoutProps) {
               <ul className="space-y-3 text-gray-400">
                 <li>
                   <Link
-                    href="/pathway"
+                    href="/curriculum"
                     className="hover:text-white transition-colors"
                   >
-                    Pathways
+                    Curriculum
                   </Link>
                 </li>
                 <li>

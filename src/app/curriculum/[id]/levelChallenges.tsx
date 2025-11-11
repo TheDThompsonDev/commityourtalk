@@ -47,7 +47,7 @@ export const LevelChallenge: React.FC<LevelChallengeProps> = ({ levelNumber, lev
               <li><strong>WHAT:</strong> State the core issue or context in 1 sentence</li>
               <li><strong>SO WHAT:</strong> Explain why it matters in 1 sentence</li>
               <li><strong>NOW WHAT:</strong> Provide the action or next step in 1 sentence</li>
-              <li>Speak with confidence—no hedging language</li>
+              <li>Speak with confidence (no hedging language)</li>
             </ul>
           </div>
         </div>
@@ -238,7 +238,7 @@ export const LevelChallenge: React.FC<LevelChallengeProps> = ({ levelNumber, lev
               <li><strong>Focus on impact:</strong> Explain the consequence, not the judgment</li>
               <li><strong>Collaborate:</strong> Ask questions, not demands (&quot;What if we...?&quot;)</li>
               <li><strong>When receiving feedback:</strong> Ask clarifying questions, not justifications</li>
-              <li><strong>Follow up:</strong> Close the loop—show you heard them</li>
+              <li><strong>Follow up:</strong> Close the loop and show you heard them</li>
             </ul>
           </div>
         </div>

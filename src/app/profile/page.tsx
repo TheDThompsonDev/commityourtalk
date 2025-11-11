@@ -21,7 +21,7 @@ export default function ProfilePage() {
                   Dashboard
                 </Link>
                 <Link
-                  href="/pathway"
+                  href="/curriculum"
                   className="text-gray-600 hover:text-gray-900 font-medium"
                 >
                   Pathways

@@ -153,7 +153,7 @@ export default async function LevelDetailPage({ params }: LevelDetailPageProps) 
                   <>Now that you have a structure (Structured Framing from Level 1), you&apos;ll learn the most important skill in engineering: <strong>Diagnostic Questions</strong>. Your job isn&apos;t to be a &quot;feature factory&quot; but a &quot;problem-solver.&quot; This level teaches you to stop taking requests at face value and start asking the questions that uncover the <em>real</em> problem.</>
                 )}
                 {level.level === 3 && (
-                  <>This is where we apply your new skills (Structured Framing + Diagnostic Questions) to the most common—and most dangerous—conversations you&apos;ll have: talking to your peers. This level is all about <strong>handling difficult conversations</strong> about code, ideas, and feedback, both as the giver and the receiver.</>
+                  <>This is where we apply your new skills (Structured Framing + Diagnostic Questions) to the most common (and most dangerous) conversations you&apos;ll have: talking to your peers. This level is all about <strong>handling difficult conversations</strong> about code, ideas, and feedback, both as the giver and the receiver.</>
                 )}
                 {level.level === 4 && (
                   <>This level is where you transition from &quot;doer&quot; to &quot;multiplier.&quot; Your value is no longer just the code you write; it&apos;s your ability to make <em>other engineers</em> better. You&apos;ll master the art of teaching by asking, not telling, using <strong>Impact Framing</strong> to connect technical choices to real-world consequences.</>
@@ -162,19 +162,19 @@ export default async function LevelDetailPage({ params }: LevelDetailPageProps) 
                   <>You&apos;re now moving into leadership. This level is about handling difficult conversations <em>up and across</em>. You&apos;ll learn to manage your manager, mediate conflict, and advocate for your team using <strong>Collaborative Discovery</strong> to guide stakeholders to solutions where they feel ownership.</>
                 )}
                 {level.level === 6 && (
-                  <>Your focus now expands outside your team. You will learn to speak the language of Product, Design, and Marketing. This is where you master <strong>Impact Framing</strong> to translate technical work into <em>business value</em>—the #1 skill of all Staff-plus and Principal engineers.</>
+                  <>Your focus now expands outside your team. You will learn to speak the language of Product, Design, and Marketing. This is where you master <strong>Impact Framing</strong> to translate technical work into <em>business value</em>, the #1 skill of all Staff-plus and Principal engineers.</>
                 )}
                 {level.level === 7 && (
                   <>You are now operating at the Staff/Principal level. Your job is no longer to <em>work on</em> the system; your job is to <em>redesign</em> the system. This means influencing company-wide strategy, leading large-scale initiatives, and combining <strong>all CYT techniques</strong> to drive organizational change.</>
                 )}
                 {level.level === 8 && (
-                  <>Your influence now extends beyond your company. This level is about building your professional brand, crafting impactful presentations, and inspiring innovation using <strong>Vision Casting</strong>—painting a clear, compelling, and emotional picture of the future.</>
+                  <>Your influence now extends beyond your company. This level is about building your professional brand, crafting impactful presentations, and inspiring innovation using <strong>Vision Casting</strong>: painting a clear, compelling, and emotional picture of the future.</>
                 )}
                 {level.level === 9 && (
                   <>Your focus is now on <em>scale</em>. How do you take your &quot;big idea&quot; from Level 8 and build a community or a movement around it? This level is about leading open-source projects, building a content brand, and shaping industry conversations through masterful <strong>Vision Casting</strong>.</>
                 )}
                 {level.level === 10 && (
-                  <>This is the capstone. You will now combine <strong>all 5 CYT techniques</strong>—Framing, Diagnosis, Impact, Discovery, and Vision—to deliver high-stakes keynotes that don&apos;t just <em>inform</em> an audience, but <em>change</em> them.</>
+                  <>This is the capstone. You will now combine <strong>all 5 CYT techniques</strong> (Framing, Diagnosis, Impact, Discovery, and Vision) to deliver high-stakes keynotes that don&apos;t just <em>inform</em> an audience, but <em>change</em> them.</>
                 )}
               </p>
             </div>
